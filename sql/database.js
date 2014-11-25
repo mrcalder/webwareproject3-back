@@ -2,7 +2,7 @@ var inspect = require('util').inspect;
 var Client = require('mariasql');
 
 // Declare a method to retrieve all person objects from the database.
-exports.people = function() {
+exports.people = function(res, callback) {
     // Create the database client.
     var c = new Client();
     // Initialize the array to store the people.
@@ -10,7 +10,7 @@ exports.people = function() {
 
     // Connect to the database containing the data we want.
     c.connect({
-        host: 'rous.wpi.edu',
+        host: 'localhost',
         user: 'mrcalder',
         password: 'mrcalder_pw',
         db: 'mrcalder_db'
@@ -50,11 +50,10 @@ exports.people = function() {
         // Log when we finish all the results.
         .on('end', function () {
             console.log('Done with all results');
+            // Give the results to the callback.
+            callback(res, people);
         });
 
     // Wait until all queries have completed successfully, then close the connection.
     c.end();
-
-    // Return the array of all people in the database.
-    return people;
 };

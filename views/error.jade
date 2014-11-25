@@ -1,0 +1,19 @@
+doctype html
+// HTML element for the document.
+html
+  // Head of the document.
+  head
+    // Set the title of the page.
+    title= title
+    // Import the CSS file.
+    link(rel='stylesheet', href='/css/style.css')
+    // Import the JavaScript file.
+    script(src='/js/script.js')
+  // Body of the document.
+  body
+    // Contains the message.
+    h1= message
+    // Displays the status.
+    h2= error.status
+    // Shows the error stack.
+    pre #{error.stack}
