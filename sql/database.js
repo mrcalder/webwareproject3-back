@@ -1,12 +1,12 @@
 var inspect = require('util').inspect;
 var Client = require('mariasql');
 
-// Declare a method to retrieve all person objects from the database.
-exports.people = function(res, callback) {
+// Declare a method to query the database.
+exports.query = function(res, query, params, callback) {
     // Create the database client.
     var c = new Client();
     // Initialize the array to store the people.
-    var people = [];
+    var queryResults = [];
 
     // Connect to the database containing the data we want.
     c.connect({
@@ -29,13 +29,16 @@ exports.people = function(res, callback) {
             console.log('Client closed');
         });
 
-    // Execute a query to retrieve all person objects.
-    c.query('SELECT * FROM people')
+    // Create a prepared query to prevent SQL injection.
+    var preparedQuery = c.prepare(query);
+
+    // Execute the query and send the results to the callback.
+    c.query(preparedQuery(params))
         // On success, iterate through the rows.
         .on('result', function (res) {
             // Add each row to the result array, log the row as well.
             res.on('row', function (row) {
-                people.push(row);
+                queryResults.push(row);
                 console.log('Result row: ' + inspect(row));
             })
                 // Log if an error occurs.
@@ -51,7 +54,7 @@ exports.people = function(res, callback) {
         .on('end', function () {
             console.log('Done with all results');
             // Give the results to the callback.
-            callback(res, people);
+            callback(res, queryResults);
         });
 
     // Wait until all queries have completed successfully, then close the connection.
