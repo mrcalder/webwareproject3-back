@@ -37,12 +37,12 @@ router.get('/locations/:year', function(req, res) {
 
   // Initialize the query string to get the count for students from the first state.
   var queryString = 'SELECT \'' + states[0] + '\' AS state, COUNT(*) AS count FROM students WHERE address REGEXP \'.+ ' +
-      states[0] + ' [1-9]{5}$\' AND gradYear = :year';
+      states[0] + ' [0-9]{5}$\' AND gradYear = :year';
 
   // Iterate through the rest of the states to complete the query string.
   for (var i = 1; i < states.length; i++) {
     queryString = queryString + ' UNION SELECT \'' + states[i] +
-    '\' AS state, COUNT(*) AS count FROM students WHERE address REGEXP \'.+ ' + states[i] + ' [1-9]{5}$\' AND gradYear = :year';
+    '\' AS state, COUNT(*) AS count FROM students WHERE address REGEXP \'.+ ' + states[i] + ' [0-9]{5}$\' AND gradYear = :year';
   }
 
   // Query the database for the locations of students graduating in the given year.
@@ -79,7 +79,8 @@ router.get('/reviews', function(req, res) {
 /* POST new review data. */
 router.post('/addReview', function(req, res) {
   // Create a query string to get all reviews and their ratings.
-  var queryString = 'INSERT INTO reviews VALUES (\':review\', :rating)';
+  var queryString = 'INSERT INTO reviews VALUES (:review, :rating)';
+
 
   // Query the database for the majors of students graduating in the given year.
   database.query(res, queryString, { review: req.param('review'), rating: req.param('rating') }, databaseCallback);
