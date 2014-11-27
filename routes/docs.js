@@ -116,6 +116,56 @@ router.get('/docs.json', function(req, res) {
   // ------------------ end /majors/{year} path ---------------------------
 
 
+  // ----------------- documentation for the /reviews path ----------------
+  to_send.paths["/reviews"] = {};
+  to_send.paths["/reviews"].get = {};
+  to_send.paths["/reviews"].get.tags = ["review"];
+  to_send.paths["/reviews"].get.summary = "Get reviews of WPI from all people who visited the site";
+  to_send.paths["/reviews"].get.description = "";
+  to_send.paths["/reviews"].get.operationId = "getReviews";
+  to_send.paths["/reviews"].get.consumes = ["application/json"];
+  to_send.paths["/reviews"].get.produces = ["application/json"];
+  to_send.paths["/reviews"].get.responses = {};
+  to_send.paths["/reviews"].get.responses["200"] = {};
+  to_send.paths["/reviews"].get.responses["200"].description = "successful operation";
+  to_send.paths["/reviews"].get.responses["200"].schema = { 'type' : 'array',
+                                                              'items': {
+                                                                '$ref' : '#/definitions/Review'
+                                                              }
+                                                            };
+  // ------------------ end /reviews path ---------------------------
+
+
+
+  // ----------------- documentation for the /addReview path ----------------
+  to_send.paths["/addReview"] = {};
+  to_send.paths["/addReview"].post = {};
+  to_send.paths["/addReview"].post.tags = ["review"];
+  to_send.paths["/addReview"].post.summary = "Add a review";
+  to_send.paths["/addReview"].post.description = "";
+  to_send.paths["/addReview"].post.operationId = "addReview";
+  to_send.paths["/addReview"].post.consumes = ["application/json"];
+  to_send.paths["/addReview"].post.produces = ["application/json"];
+  to_send.paths["/addReview"].post.parameters = [{
+    "in"          : "body",
+    "name"        : "body",
+    "description" : "Review object that needs to be stored in the db",
+    "required"    : true,
+    "schema"      : { "$ref" : "#/definitions/Review" }
+  }];
+  to_send.paths["/addReview"].post.responses = {};
+  to_send.paths["/addReview"].post.responses["200"] = {};
+  to_send.paths["/addReview"].post.responses["200"].description = "successful operation";
+  to_send.paths["/addReview"].post.responses["200"].schema = { 'type' : 'array',
+                                                              'items': {
+                                                                '$ref' : '#/definitions/Review'
+                                                              }
+                                                            };
+  to_send.paths["/addReview"].post.responses["405"] = {};
+  to_send.paths["/addReview"].post.responses["405"].description = "Invalid input";
+  // ------------------ end /addReview path ---------------------------
+
+
 
 
   // ------------------- schema definitions ---------------------------
@@ -150,6 +200,20 @@ router.get('/docs.json', function(req, res) {
                                                      'xml'   : { 'name' : 'count' } };
   to_send.definitions.Major.xml = { "name" : "Major" };
   /* ----------- end Major --------------*/
+
+  /* ---------- Review Definition ------------*/
+  to_send.definitions.Review = {};
+  to_send.definitions.Review.required = [
+          'review',
+          'rating'
+  ];
+  to_send.definitions.Review.properties = {};
+  to_send.definitions.Review.properties.review = { 'type'  : 'string',
+                                                     'xml'   : { 'name' : 'review' } };
+  to_send.definitions.Review.properties.rating = { 'type'  : 'integer',
+                                                     'xml'   : { 'name' : 'rating' } };
+  to_send.definitions.Review.xml = { "name" : "Review" };
+  /* ----------- end Review --------------*/
 
   // --------------------- end definitions ----------------------------
 
