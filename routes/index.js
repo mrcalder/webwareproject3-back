@@ -16,12 +16,12 @@ router.get('/locations', function(req, res) {
 
   // Initialize the query string to get the count for students from the first state.
   var queryString = 'SELECT \'' + states[0] + '\' AS state, COUNT(*) AS count FROM students WHERE address REGEXP \'.+ ' +
-      states[0] + ' [1-9]{5}$\'';
+      states[0] + ' [0-9]{5}$\'';
 
   // Iterate through the rest of the states to complete the query string.
   for (var i = 1; i < states.length; i++) {
     queryString = queryString + ' UNION SELECT \'' + states[i] +
-    '\' AS state, COUNT(*) AS count FROM students WHERE address REGEXP \'.+ ' + states[i] + ' [1-9]{5}$\'';
+    '\' AS state, COUNT(*) AS count FROM students WHERE address REGEXP \'.+ ' + states[i] + ' [0-9]{5}$\'';
   }
 
   // Query the database for the locations of students graduating in the given year.
