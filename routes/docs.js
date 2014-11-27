@@ -4,7 +4,8 @@ var router = express.Router();
 
 /* GET the docs page */
 router.get('/', function(req, res) {
-  res.sendFile(path.resolve("public/docs.html"));
+  var p = __dirname.split("/").slice(0,-1).join("/");
+  res.sendFile(p + "/public/docs.html");
 });
 
 /* GET the docs info */
