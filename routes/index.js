@@ -2,6 +2,12 @@ var express = require('express');
 var router = express.Router();
 var database = require('../sql/database');
 
+
+/* Send to the docs page by default */
+router.get('/', function(req, res) {
+  res.redirect('/docs');
+});
+
 // Send the data from a database query back to the browser.
 function databaseCallback(res, data) {
   res.send(JSON.stringify(data));
